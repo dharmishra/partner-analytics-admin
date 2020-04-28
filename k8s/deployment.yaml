@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin
+spec:
+  selector:
+    matchLabels:
+      app: admin
+  template:
+    metadata:
+      labels:
+        app: admin
+    spec:
+      containers:
+        - name: admin
+          image: nexuscoe.rjil.ril.com:5006/partneranalytics/admin-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: admin
+data:
+  application.yml: |-
+    spring:
+     cloud:
+      kubernetes:
+        discovery:
+          all-namespaces: true
+          service-labels:imagePullPolicy
+            spring-boot: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin
+spec:
+  type: LoadBalancer
+  selector:
+    app: admin
+  ports:
+    - port: 8081
+      targetPort: 8081

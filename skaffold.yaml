@@ -1,0 +1,10 @@
+apiVersion: skaffold/v2alpha1
+kind: Config
+metadata:
+  name: admin-service
+build:
+  artifacts:
+    - image: nexuscoe.rjil.ril.com:5006/partneranalytics/admin-service:latest
+      jib: {}
+  tagPolicy:
+    gitCommit: {}
